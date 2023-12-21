@@ -5,7 +5,6 @@ import Typed from 'typed.js';
 
 function LandingPage() {
 	const el = useRef(null);
-
 	const navigate = useNavigate();
 
 	const onClickSignup = () => {
@@ -18,7 +17,7 @@ function LandingPage() {
 
 	useEffect(() => {
 		const typed = new Typed(el.current, {
-			strings: ['HELLO!'],
+			strings: ['HELLO!', '안녕하세요!'],
 			typeSpeed: 70,
 			backSpeed: 30,
 		});
@@ -27,6 +26,7 @@ function LandingPage() {
 			typed.destroy();
 		};
 	}, []);
+
 	return (
 		<div style={{ display: 'flex', width: '100dvw', height: '100dvh' }}>
 			<div
@@ -46,7 +46,15 @@ function LandingPage() {
 				>
 					BANGGO
 				</h1>
-				<p ref={el} style={{ paddingTop: '35dvh', paddingLeft: '5dvh', color: '#ffffff', fontSize: '3rem' }} />
+				<p
+					ref={el}
+					style={{
+						paddingTop: '35dvh',
+						paddingLeft: '5dvh',
+						color: '#ffffff',
+						fontSize: '3rem',
+					}}
+				/>
 			</div>
 			<div
 				style={{
@@ -59,12 +67,30 @@ function LandingPage() {
 					backgroundColor: '#200E3A',
 				}}
 			>
-				<Button variant="outline-info" style={{ width: '60%' }} onClick={onClickLogin}>
-					로그인
-				</Button>
-				<Button variant="outline-info" style={{ width: '60%', marginTop: '0.5%' }} onClick={onClickSignup}>
-					회원가입
-				</Button>
+				<div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+					<Button variant="outline-warning" style={{ width: '30%' }}>
+						카카오 로그인
+					</Button>
+					<Button variant="outline-primary" style={{ width: '30%' }}>
+						구글 로그인
+					</Button>
+				</div>
+				<div
+					style={{
+						width: '100%',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						flexDirection: 'column',
+					}}
+				>
+					<Button variant="outline-info" style={{ width: '60%', marginTop: '0.5%' }} onClick={onClickLogin}>
+						로그인
+					</Button>
+					<Button variant="outline-info" style={{ width: '60%', marginTop: '0.5%' }} onClick={onClickSignup}>
+						회원가입
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
