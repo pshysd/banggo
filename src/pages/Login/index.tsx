@@ -20,18 +20,21 @@ function Login() {
 
 	const navigate = useNavigate();
 
-	const onSubmit = useCallback(async (form: ILoginForm) => {
-		try {
-			const result = await axios.post('/api/users/login', form, {
-				withCredentials: true,
-			});
+	const onSubmit = useCallback(
+		async (form: ILoginForm) => {
+			try {
+				const result = await axios.post('/api/users/login', form, {
+					withCredentials: true,
+				});
 
-			if (result) return navigate('/');
-		} catch (e) {
-			const err = e as Error;
-			alert(err);
-		}
-	}, []);
+				if (result) return navigate('/');
+			} catch (e) {
+				const err = e as Error;
+				alert(err);
+			}
+		},
+		[navigate]
+	);
 
 	const handleKakao = useCallback(async () => {
 		window.location.href = `/api/users/kakao`;
