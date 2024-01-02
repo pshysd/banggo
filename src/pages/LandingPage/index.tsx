@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
@@ -14,6 +14,14 @@ function LandingPage() {
 	const onClickLogin = () => {
 		navigate('/login');
 	};
+
+	const handleKakao = useCallback(async () => {
+		window.location.href = `/api/users/kakao`;
+	}, []);
+
+	const handleGoogle = useCallback(() => {
+		window.location.href = `/api/users/google`;
+	}, []);
 
 	useEffect(() => {
 		const typed = new Typed(el.current, {
@@ -68,10 +76,10 @@ function LandingPage() {
 				}}
 			>
 				<div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-					<Button variant="outline-warning" style={{ width: '30%' }}>
+					<Button variant="outline-warning" style={{ width: '30%' }} onClick={handleKakao}>
 						카카오 로그인
 					</Button>
-					<Button variant="outline-primary" style={{ width: '30%' }}>
+					<Button variant="outline-primary" style={{ width: '30%' }} onClick={handleGoogle}>
 						구글 로그인
 					</Button>
 				</div>
