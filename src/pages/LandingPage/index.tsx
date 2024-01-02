@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
@@ -15,7 +16,7 @@ function LandingPage() {
 		navigate('/login');
 	};
 
-	const handleKakao = useCallback(() => {
+	const handleKakao = useCallback(async () => {
 		window.location.href = `/api/users/kakao`;
 	}, []);
 
