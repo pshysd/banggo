@@ -1,7 +1,8 @@
 import React from 'react';
+import Drawer from '@components/Drawer';
 
 function MainPage() {
-	return <div>index</div>;
+	return <Drawer />;
 }
 
 export default MainPage;

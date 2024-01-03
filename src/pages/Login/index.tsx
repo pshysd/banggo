@@ -1,36 +1,27 @@
 import { useCallback } from 'react';
-import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-interface ILoginForm {
-	email: string;
-	password: string;
-}
+import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, Link } from '@mui/material';
+import { LockOutlined } from '@mui/icons-material';
+import Footer from '@components/Footer';
 
 function Login() {
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<ILoginForm>({
-		mode: 'onBlur',
-	});
-
 	const navigate = useNavigate();
 
-	const onSubmit = useCallback(
-		async (form: ILoginForm) => {
+	const handleSubmit = useCallback(
+		async (e: React.FormEvent<HTMLFormElement>) => {
+			e.preventDefault();
+			const formData = new FormData(e.currentTarget);
 			try {
-				const result = await axios.post('/api/users/login', form, {
+				const result = await axios.post('/api/users/login', formData, {
 					withCredentials: true,
 				});
 
 				if (result) return navigate('/main');
 			} catch (e) {
 				const err = e as Error;
-				alert(err);
+				console.error(err);
 			}
 		},
 		[navigate]
@@ -45,67 +36,57 @@ function Login() {
 	}, []);
 
 	return (
-		<div style={{ margin: '15% 30%' }}>
-			<h1 style={{ textAlign: 'center' }}>로그인 페이지</h1>
-			<div style={{ padding: '5% 15%' }}>
-				<Form onSubmit={handleSubmit(onSubmit)}>
-					<Form.Group className="mb-3" controlId="email">
-						<FloatingLabel controlId="email" className="mb-3" label="이메일">
-							<Form.Control
-								type="email"
-								{...register('email', {
-									required: '이메일을 입력해주세요.',
-									pattern: {
-										value: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-										message: '유효하지 않은 이메일 형식입니다.',
-									},
-								})}
-							/>
-						</FloatingLabel>
-						{errors?.email && <Form.Text style={{ color: 'red' }}>{errors.email.message}</Form.Text>}
-					</Form.Group>
-					<Form.Group className="mb-3" controlId="password">
-						<FloatingLabel controlId="password" className="mb-3" label="비밀번호">
-							<Form.Control
-								type="password"
-								{...register('password', {
-									required: '비밀번호를 입력해주세요.',
-									pattern: {
-										value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{10,}$/,
-										message: '영어, 특수문자, 숫자가 각각 한 글자씩은 포함되어있어야 합니다.',
-									},
-									minLength: {
-										value: 9,
-										message: '비밀번호는 10글자 이상이어야 합니다.',
-									},
-								})}
-							/>
-						</FloatingLabel>
-						{errors?.password ? (
-							<Form.Text style={{ color: 'red' }}>{errors?.password.message}</Form.Text>
-						) : (
-							<Form.Text>대소문자, 특수문자, 숫자가 각각 하나씩은 포함된 10글자 이상의 비밀번호를 만들어주세요.</Form.Text>
-						)}
-					</Form.Group>
-					<Button variant="primary" type="submit" style={{ width: '100%' }}>
+		<Container component="main" maxWidth="xs">
+			<CssBaseline />
+			<Box
+				sx={{
+					marginTop: 8,
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+				}}
+			>
+				<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+					<LockOutlined />
+				</Avatar>
+				<Typography component="h1" variant="h5">
+					Sign in
+				</Typography>
+				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+					<TextField margin="normal" required fullWidth id="email" label="이메일" name="email" autoComplete="email" autoFocus />
+					<TextField
+						margin="normal"
+						required
+						fullWidth
+						name="password"
+						label="비밀번호"
+						type="password"
+						id="password"
+						autoComplete="current-password"
+					/>
+					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+					<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
 						로그인
 					</Button>
-					<br />
-					<Form.Text>
-						혹시 회원가입을 하지 않으셨다면? <br />
-						<Link to="/signup">당장 계정 만들러 가기</Link>
-					</Form.Text>
-				</Form>
-				<div>
-					<Button variant="warning" onClick={handleKakao} style={{ width: '100%' }}>
-						카카오 로그인
-					</Button>
-					<Button onClick={handleGoogle} style={{ width: '100%', marginTop: '1%' }}>
-						구글 로그인
-					</Button>
-				</div>
-			</div>
-		</div>
+					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1%' }}>
+						<Button type="submit" fullWidth variant="outlined" onClick={handleKakao} sx={{ width: '49%' }}>
+							카카오 아이디로 로그인
+						</Button>
+						<Button type="submit" fullWidth variant="outlined" onClick={handleGoogle} sx={{ width: '49%' }}>
+							구글 아이디로 로그인
+						</Button>
+					</div>
+					<Grid container>
+						<Grid item xs>
+							<Link href="/signup" variant="body2">
+								회원가입
+							</Link>
+						</Grid>
+					</Grid>
+				</Box>
+			</Box>
+			<Footer />
+		</Container>
 	);
 }
 

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import React, { useCallback, useEffect, useRef } from 'react';
-import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import { Box } from '@mui/material';
 
 function LandingPage() {
 	const el = useRef(null);
@@ -29,6 +30,7 @@ function LandingPage() {
 			strings: ['HELLO!', '안녕하세요!'],
 			typeSpeed: 70,
 			backSpeed: 30,
+			showCursor: false,
 		});
 
 		return () => {
@@ -37,70 +39,89 @@ function LandingPage() {
 	}, []);
 
 	return (
-		<div style={{ display: 'flex', width: '100dvw', height: '100dvh' }}>
-			<div
-				style={{
-					width: '60dvw',
-					height: '100dvh',
-					backgroundColor: '#38419D',
-				}}
-			>
-				<h1
-					style={{
-						color: '#ffffff',
+		<div style={{ display: 'flex' }}>
+			<Box sx={{ bgcolor: 'teal.main' }} width={'60dvw'} height={'100dvh'}>
+				<Typography
+					variant="h1"
+					sx={{
+						color: 'black.main',
 						paddingLeft: '3%',
 						paddingTop: '2%',
 						fontSize: '1.2rem',
 					}}
 				>
 					BANGGO
-				</h1>
+				</Typography>
 				<p
 					ref={el}
 					style={{
 						paddingTop: '35dvh',
 						paddingLeft: '5dvh',
-						color: '#ffffff',
+						color: '#fff',
 						fontSize: '3rem',
 					}}
 				/>
-			</div>
-			<div
-				style={{
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center',
-					flexDirection: 'column',
-					width: '40dvw',
-					height: '100dvh',
-					backgroundColor: '#200E3A',
-				}}
+			</Box>
+			<Box
+				display={'flex'}
+				flexDirection={'column'}
+				width={'40dvw'}
+				height={'100dvh'}
+				sx={{ bgcolor: 'black.main', padding: '0 5%', paddingTop: '25%' }}
 			>
-				<div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-					<Button variant="outline-warning" style={{ width: '30%' }} onClick={handleKakao}>
+				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+					<Button
+						variant="contained"
+						onClick={handleKakao}
+						sx={{
+							bgcolor: 'kakao.main',
+							color: 'kakao.contrastText',
+							width: '49%',
+							':hover': {
+								bgcolor: 'kakao.dark',
+							},
+						}}
+					>
 						카카오 로그인
 					</Button>
-					<Button variant="outline-primary" style={{ width: '30%' }} onClick={handleGoogle}>
+					<Button variant="contained" onClick={handleGoogle} sx={{ width: '49%' }}>
 						구글 로그인
 					</Button>
 				</div>
 				<div
 					style={{
-						width: '100%',
 						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
 						flexDirection: 'column',
 					}}
 				>
-					<Button variant="outline-info" style={{ width: '60%', marginTop: '0.5%' }} onClick={onClickLogin}>
+					<Button
+						variant="contained"
+						onClick={onClickLogin}
+						sx={{
+							bgcolor: 'gray.main',
+							mt: 0.5,
+							':hover': {
+								bgcolor: 'gray.dark',
+							},
+						}}
+					>
 						로그인
 					</Button>
-					<Button variant="outline-info" style={{ width: '60%', marginTop: '0.5%' }} onClick={onClickSignup}>
+					<Button
+						variant="contained"
+						onClick={onClickSignup}
+						sx={{
+							bgcolor: 'gray.main',
+							mt: 0.5,
+							':hover': {
+								bgcolor: 'gray.dark',
+							},
+						}}
+					>
 						회원가입
 					</Button>
 				</div>
-			</div>
+			</Box>
 		</div>
 	);
 }
