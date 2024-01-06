@@ -4,9 +4,9 @@
 		"paths": {
 			"@pages/*": ["pages/*"],
 			"@components/*": ["components/*"],
-			"@hooks/*": ["hooks/*"],
 			"@layouts/*": ["layouts/*"],
-			"@images/*": ["assets/img/*"]
+			"@typings/*": ["typings/*"],
+			"@utils/*": ["utils/*"]
 		}
 	}
 }
