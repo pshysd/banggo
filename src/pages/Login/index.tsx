@@ -1,56 +1,87 @@
+import react, { useEffect } from 'react';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-import { Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Grid, Box, Typography, Container, Link } from '@mui/material';
+import {
+	Avatar,
+	Button,
+	CssBaseline,
+	TextField,
+	FormControlLabel,
+	Checkbox,
+	Grid,
+	Box,
+	Typography,
+	Container,
+	Link,
+	CircularProgress,
+} from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
 import Footer from '@components/Footer';
+import useSWR from 'swr';
+import { IUser } from '@typings/db';
+import fetcher from '@utils/fetcher';
 
 function Login() {
+	const { data: user, mutate: mutateUser } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 0 });
 	const navigate = useNavigate();
 
-	const handleSubmit = useCallback(
-		async (e: React.FormEvent<HTMLFormElement>) => {
-			e.preventDefault();
-			const formData = new FormData(e.currentTarget);
-			try {
-				const result = await axios.post('/api/users/login', formData, {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const email = formData.get('email');
+		const password = formData.get('password');
+		try {
+			const result = await axios.post(
+				'/api/auth/login',
+				{
+					email,
+					password,
+				},
+				{
 					withCredentials: true,
-				});
+				}
+			);
 
-				if (result) return navigate('/main');
-			} catch (e) {
-				const err = e as Error;
-				console.error(err);
+			if (result) {
+				mutateUser();
+				return navigate('/ask');
 			}
-		},
-		[navigate]
-	);
+		} catch (e) {
+			const err = e as Error;
+			console.error(err);
+			alert(err.response?.data);
+		}
+	};
 
-	const handleKakao = useCallback(async () => {
-		window.location.href = `/api/users/kakao`;
+	const onKakao = useCallback(async () => {
+		window.location.href = `/api/auth/kakao`;
 	}, []);
 
-	const handleGoogle = useCallback(() => {
-		window.location.href = `/api/users/google`;
+	const onGoogle = useCallback(() => {
+		window.location.href = `/api/auth/google`;
 	}, []);
+
+	if (user === undefined) return <CircularProgress />;
+
+	if (user) return <Navigate to={'/ask'} replace={true} />;
 
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<Box
 				sx={{
-					marginTop: 8,
+					marginTop: 20,
 					display: 'flex',
 					flexDirection: 'column',
 					alignItems: 'center',
 				}}
 			>
-				<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+				<Avatar sx={{ m: 1, bgcolor: 'black.main' }}>
 					<LockOutlined />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					로그인
 				</Typography>
 				<Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 					<TextField margin="normal" required fullWidth id="email" label="이메일" name="email" autoComplete="email" autoFocus />
@@ -65,19 +96,25 @@ function Login() {
 						autoComplete="current-password"
 					/>
 					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-					<Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
+					<Button type="submit" fullWidth variant="contained" sx={{ mt: 0, mb: 1 }}>
 						로그인
 					</Button>
 					<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1%' }}>
-						<Button type="submit" fullWidth variant="outlined" onClick={handleKakao} sx={{ width: '49%' }}>
+						<Button
+							type="button"
+							fullWidth
+							variant="contained"
+							onClick={onKakao}
+							sx={{ width: '49%', bgcolor: 'kakao.main', color: 'kakao.contrastText', ':hover': { bgcolor: 'kakao.dark' } }}
+						>
 							카카오 아이디로 로그인
 						</Button>
-						<Button type="submit" fullWidth variant="outlined" onClick={handleGoogle} sx={{ width: '49%' }}>
+						<Button type="button" fullWidth variant="outlined" onClick={onGoogle} sx={{ width: '49%' }}>
 							구글 아이디로 로그인
 						</Button>
 					</div>
 					<Grid container>
-						<Grid item xs>
+						<Grid item>
 							<Link href="/signup" variant="body2">
 								회원가입
 							</Link>

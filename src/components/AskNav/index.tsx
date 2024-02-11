@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,11 +17,12 @@ import { IUser } from '@typings/db';
 import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
 import loadable from '@loadable/component';
+import { CircularProgress, Link } from '@mui/material';
 
 const Drawer = loadable(() => import('@components/Drawer'));
 
 function AskNav() {
-	const { data: user, mutate: mutateUser } = useSWR<IUser>('/api/users', fetcher);
+	const { data: user, mutate: mutateUser } = useSWR<IUser | false>(`/api/auth`, fetcher);
 
 	const navigate = useNavigate();
 
@@ -48,13 +49,12 @@ function AskNav() {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
-	const handleLogout = () => {
-		axios.post(`/api/users/logout`).then(() => {
-			alert('로그아웃 되었습니다.');
-			mutateUser();
-			navigate('/');
+	const onLogout = useCallback(() => {
+		axios.post(`/api/auth/logout`, null, { withCredentials: true }).then(() => {
+			mutateUser(false, false);
+			navigate('/', { replace: true });
 		});
-	};
+	}, [mutateUser, navigate]);
 
 	const menuId = 'primary-search-account-menu';
 	const renderMenu = (
@@ -75,7 +75,7 @@ function AskNav() {
 		>
 			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
 			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
-			<MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+			<MenuItem onClick={onLogout}>로그아웃</MenuItem>
 		</Menu>
 	);
 
@@ -127,12 +127,22 @@ function AskNav() {
 		</Menu>
 	);
 
+	if (user === undefined)
+		return (
+			<Box display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
+				<CircularProgress />
+				<Typography>잠시만 기다려주세요...</Typography>
+			</Box>
+		);
+
 	return (
 		<>
 			<AppBar position="static" sx={{ bgcolor: 'gray.main' }}>
 				<Toolbar>
 					<Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-						BANGGO
+						<Link href="/ask" color={'white.main'} sx={{ textDecoration: 'none' }}>
+							BANGGO
+						</Link>
 					</Typography>
 					<Box sx={{ flexGrow: 1 }} />
 					<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
