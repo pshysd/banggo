@@ -17,7 +17,7 @@ interface ICounseling {
 	problems?: IProblem[];
 	solutions?: ISolution[];
 	AIAnswer: string;
-	createdAt: Date;
+	createdAt: string;
 }
 
 interface IProblem {}

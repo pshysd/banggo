@@ -14,7 +14,7 @@ const bull = (
 );
 
 function CounselingCard({ counseling }: Props) {
-	const createdAt = counseling.createdAt;
+	const createdAt = new Date(counseling.createdAt);
 	const title = counseling.title;
 
 	const year = createdAt.getFullYear();
