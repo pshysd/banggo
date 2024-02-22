@@ -2,7 +2,7 @@ name: Node.js Package
 
 on:
   push:
-    branches: [push]
+    branches: [main]
 
 env:
   REACT_APP_API_URL: ${{secrets.REACT_APP_API_URL}}
