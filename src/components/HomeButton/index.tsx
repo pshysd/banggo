@@ -1,19 +1,19 @@
 import { Fab } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
 
-function AddButton() {
+function HomeButton() {
 	const navigate = useNavigate();
 
-	const onClickAddButton = () => {
-		return navigate('/ask/new');
+	const onClickHomeButton = () => {
+		return navigate('/ask');
 	};
 
 	return (
 		<>
 			<Fab
-				onClick={onClickAddButton}
+				onClick={onClickHomeButton}
 				color="primary"
 				aria-label="add"
 				size="large"
@@ -27,10 +27,10 @@ function AddButton() {
 					},
 				}}
 			>
-				<AddIcon />
+				<HomeIcon />
 			</Fab>
 		</>
 	);
 }
 
-export default AddButton;
+export default HomeButton;

@@ -1,8 +1,8 @@
 {
 	"name": "client",
+	"homepage": ".",
 	"version": "0.1.0",
 	"private": true,
-	"homepage": "./",
 	"dependencies": {
 		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
 		"@craco/craco": "^7.1.0",
@@ -22,7 +22,6 @@
 		"@types/react-dom": "^18.2.17",
 		"axios": "^1.6.2",
 		"babel-preset-react-app": "^10.0.1",
-		"env-cmd": "^10.1.0",
 		"http-proxy-middleware": "^2.0.6",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
@@ -33,7 +32,8 @@
 		"tsconfig-paths-webpack-plugin": "^4.1.0",
 		"typed.js": "^2.1.0",
 		"typescript": "^4.9.5",
-		"web-vitals": "^2.1.4"
+		"web-vitals": "^2.1.4",
+		"env-cmd": "^10.1.0"
 	},
 	"scripts": {
 		"dev": "env-cmd -f .env.development craco start",

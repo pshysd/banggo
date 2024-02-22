@@ -10,12 +10,18 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/MenuRounded';
+import { useNavigate } from 'react-router-dom';
 
 type Anchor = 'right';
 
-const Menu = ['상담기록', '질문하기'];
+const Menu = [
+	{ title: '상담기록', link: '/ask' },
+	{ title: '질문하기', link: '/question' },
+];
 
 export default function TemporaryDrawer() {
+	const navigate = useNavigate();
+
 	const [state, setState] = React.useState({
 		right: false,
 	});
@@ -33,10 +39,10 @@ export default function TemporaryDrawer() {
 		<Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer('right', false)} onKeyDown={toggleDrawer('right', false)}>
 			<List>
 				{Menu.map((item, index) => (
-					<ListItem key={item} disablePadding>
+					<ListItem key={item.title} disablePadding>
 						<ListItemButton>
 							<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-							<ListItemText primary={item} />
+							<ListItemText primary={item.title} onClick={() => navigate(item.link)} />
 						</ListItemButton>
 					</ListItem>
 				))}
