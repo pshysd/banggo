@@ -21,8 +21,8 @@ import { CircularProgress, Link } from '@mui/material';
 
 const Drawer = loadable(() => import('@components/Drawer'));
 
-function AskNav() {
-	const { data: user, mutate: mutateUser } = useSWR<IUser | false>(`/api/auth`, fetcher);
+function NavBar() {
+	const { data: user, mutate: mutateUser } = useSWR<IUser | false>(`/api/auth`, fetcher, { dedupingInterval: 1000 * 60 });
 
 	const navigate = useNavigate();
 
@@ -191,4 +191,4 @@ function AskNav() {
 	);
 }
 
-export default AskNav;
+export default NavBar;
