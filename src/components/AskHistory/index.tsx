@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import React, { useCallback, useState } from 'react';
 import useSWR from 'swr';
-import fetcher from 'utils/fetcher';
+import fetcher from '@utils/fetcher';
 import CloseIcon from '@mui/icons-material/Close';
 import loadable from '@loadable/component';
 import axios from 'axios';

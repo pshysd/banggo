@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { Box, Divider, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 
 type Props = {
 	code?: number;
