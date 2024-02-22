@@ -73,6 +73,8 @@ function AskHistory() {
 		return <Navigate to={'/login'} />;
 	}
 
+	console.log('askhistory, counselings is array: ', Array.isArray(counselings));
+
 	return (
 		<Box width={'20%'} borderRight={'2px solid grey'}>
 			{counselings ? (

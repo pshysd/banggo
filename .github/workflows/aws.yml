@@ -1,34 +1,25 @@
-name: Node.js Package
-
+name: build and deploy
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
+  Deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 20.11.1
 
-      - name: Cache node_modules
-        id: cache
-        uses: actions/cache@v3
-        with:
-          # 캐싱할 폴더를 지정합니다.
-          path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Setup dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: Touch .env Files
+      - name: echo .env file
         run: |
           echo "REACT_APP_PUBLIC_URL=$REACT_APP_PUBLIC_URL" >> .env.production
           echo "REACT_APP_API_URL=$REACT_APP_API_URL" >> .env.production
@@ -36,13 +27,17 @@ jobs:
           REACT_APP_PUBLIC_URL: ${{ secrets.REACT_APP_PUBLIC_URL }}
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
 
-      - name: Build Files
+      - name: Build static file
         run: npm run build
         env:
           CI: false
 
-      - name: Deploy to S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: aws s3 sync --delete --region ap-northeast-2 build s3://banggo-client
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Deploy static site to S3 bucket
+        run: aws s3 sync ./build s3://banggo-client

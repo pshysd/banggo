@@ -33,17 +33,20 @@ function AskMain() {
 		);
 	}
 
+	console.log('counselings is Array: ', Array.isArray(counselings));
+
 	return (
 		<Box display={'flex'} width={'100%'} height={'100%'} flexDirection={'column'}>
 			<Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'30%'}>
 				<Typography variant="h4">가장 최근에 상담한 기록 6개 입니다.</Typography>
 			</Box>
 			<Grid container spacing={3} width={'100%'} margin={0}>
-				{counselings && counselings.map((counseling, index) => (
-					<Grid item xs={6} md={4} key={index}>
-						<CounselingCard counseling={counseling} />
-					</Grid>
-				))}
+				{counselings &&
+					counselings.map((counseling, index) => (
+						<Grid item xs={6} md={4} key={index}>
+							<CounselingCard counseling={counseling} />
+						</Grid>
+					))}
 			</Grid>
 			<AddButton />
 		</Box>

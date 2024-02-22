@@ -46,6 +46,10 @@ function LandingPage() {
 		};
 	}, []);
 
+	if (user === undefined) {
+		return <Loading />;
+	}
+	
 	if (!user) {
 		return (
 			<div style={{ display: 'flex' }}>
