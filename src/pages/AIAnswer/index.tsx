@@ -1,13 +1,10 @@
-import loadable from '@loadable/component';
-import { Container, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import useSWR from 'swr';
 import Typed from 'typed.js';
-
-const Loading = loadable(() => import('@pages/Loading'));
 
 function AIAnswer() {
 	const { data: user } = useSWR<IUser | false>('/api/auth', fetcher, {
@@ -15,9 +12,10 @@ function AIAnswer() {
 	});
 
 	const location = useLocation();
-	const AIAnswer = location.state.aiAnswer;
+	const state = JSON.parse(location.state.aiAnswer);
 	const el = useRef(null);
 
+	const AIAnswer = state.data;
 	useEffect(() => {
 		const typed = new Typed(el.current, {
 			strings: [AIAnswer],
@@ -36,25 +34,22 @@ function AIAnswer() {
 		return <Navigate to={'/ask'} />;
 	}
 
-	if (user) {
-		return (
-			<Container>
-				<Typography
-					component={'p'}
-					ref={el}
-					style={{
-						paddingTop: '35dvh',
-						paddingLeft: '5dvh',
-						color: '#fff',
-						fontSize: '3rem',
-					}}
-				/>
-			</Container>
-		);
-	} else {
-		alert('로그인되지 않은 사용자입니다.');
-		return <Navigate to={'/login'} />;
+	if (!user) {
+		return <Navigate to="/login" />;
 	}
+
+	return (
+		<Typography
+			component={'p'}
+			ref={el}
+			style={{
+				paddingTop: '35dvh',
+				paddingLeft: '5dvh',
+				color: '#000000',
+				fontSize: '1rem',
+			}}
+		/>
+	);
 }
 
 export default AIAnswer;

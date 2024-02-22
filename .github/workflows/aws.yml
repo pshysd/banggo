@@ -1,0 +1,48 @@
+name: Node.js Package
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.11.1
+
+      - name: Cache node_modules
+        id: cache
+        uses: actions/cache@v3
+        with:
+          # 캐싱할 폴더를 지정합니다.
+          path: '**/node_modules'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Setup dependencies
+        run: npm ci
+
+      - name: Touch .env Files
+        run: |
+          echo "REACT_APP_PUBLIC_URL=$REACT_APP_PUBLIC_URL" >> .env.production
+          echo "REACT_APP_API_URL=$REACT_APP_API_URL" >> .env.production
+        env:
+          REACT_APP_PUBLIC_URL: ${{ secrets.REACT_APP_PUBLIC_URL }}
+          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+
+      - name: Build Files
+        run: npm run build
+        env:
+          CI: false
+
+      - name: Deploy to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: aws s3 sync --delete --region ap-northeast-2 build s3://banggo-client

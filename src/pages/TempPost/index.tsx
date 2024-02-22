@@ -84,8 +84,9 @@ function TempPost() {
 
 	const onAiAnswer = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		const AIAnswer = await axios.post('/api/counselings/ai', result, { withCredentials: true });
+
 		if (AIAnswer) {
-			return <Navigate to={'/ask/ai'} state={{ aiAnswer: AIAnswer }} />;
+			return navigate('/ask/ai', { state: { aiAnswer: JSON.stringify(AIAnswer) } });
 		}
 	};
 
@@ -98,11 +99,8 @@ function TempPost() {
 	}
 
 	return (
-		<Container component={'main'}>
-			<Typography textAlign={'center'} component={'h1'}>
-				글 작성
-			</Typography>
-			<Box component={'form'} onSubmit={onSubmit}>
+		<Container>
+			<Box component={'form'} onSubmit={onSubmit} mt={1}>
 				<Box display={'flex'} flexWrap={'wrap'}>
 					<ToggleButtonGroup exclusive size="large" onChange={onClickCategory} value={category}>
 						{categories &&
