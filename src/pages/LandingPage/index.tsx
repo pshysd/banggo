@@ -7,6 +7,9 @@ import { Box } from '@mui/material';
 import { IUser } from '@typings/db';
 import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
+import loadable from '@loadable/component';
+
+const Loading = loadable(() => import('@pages/Loading'));
 
 function LandingPage() {
 	const { data: user } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 0 });
@@ -43,9 +46,7 @@ function LandingPage() {
 		};
 	}, []);
 
-	if (user) {
-		return <Navigate to="/ask" />;
-	} else {
+	if (!user) {
 		return (
 			<div style={{ display: 'flex' }}>
 				<Box sx={{ bgcolor: 'teal.main' }} width={'60dvw'} height={'100dvh'}>
@@ -134,6 +135,7 @@ function LandingPage() {
 			</div>
 		);
 	}
+	return <Navigate to="/ask" />;
 }
 
 export default LandingPage;

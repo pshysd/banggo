@@ -24,7 +24,7 @@ import { useNavigate } from 'react-router-dom';
 const Loading = loadable(() => import('@pages/Loading'));
 
 function AskHistory() {
-	const { data: user } = useSWR<IUser>(`/api/auth`, fetcher, {
+	const { data: user } = useSWR<IUser | false>(`/api/auth`, fetcher, {
 		dedupingInterval: 1000 * 60,
 	});
 	const { data: counselings, mutate: mutateCounselings } = useSWR<ICounseling[] | null>(`/api/users/counselings/${user?.id}`, fetcher, {
@@ -61,8 +61,12 @@ function AskHistory() {
 		[mutateCounselings, handleOpen]
 	);
 
-	if (counselings === undefined) {
+	if (counselings === undefined || user === undefined) {
 		return <Loading />;
+	}
+
+	if (!user) {
+		return <Navigate to={'/login'} />;
 	}
 
 	return (

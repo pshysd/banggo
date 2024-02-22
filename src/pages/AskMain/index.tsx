@@ -7,6 +7,7 @@ import fetcher from '@utils/fetcher';
 import CounselingCard from '@components/CounselingCard';
 
 const AddButton = loadable(() => import('@components/AddButton'));
+const Loading = loadable(() => import('@pages/Loading'));
 
 function AskMain() {
 	const { data: user } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 1000 * 60 });
