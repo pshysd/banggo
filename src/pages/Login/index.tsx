@@ -1,4 +1,3 @@
-import react, { useEffect } from 'react';
 import { useCallback } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';

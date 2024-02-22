@@ -39,11 +39,12 @@ function AskMain() {
 				<Typography variant="h4">가장 최근에 상담한 기록 6개 입니다.</Typography>
 			</Box>
 			<Grid container spacing={3} width={'100%'} margin={0}>
-				{counselings && counselings.map((counseling, index) => (
-					<Grid item xs={6} md={4} key={index}>
-						<CounselingCard counseling={counseling} />
-					</Grid>
-				))}
+				{counselings &&
+					counselings.map((counseling, index) => (
+						<Grid item xs={6} md={4} key={index}>
+							<CounselingCard counseling={counseling} />
+						</Grid>
+					))}
 			</Grid>
 			<AddButton />
 		</Box>
