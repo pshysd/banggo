@@ -19,6 +19,7 @@ import fetcher from 'utils/fetcher';
 import CloseIcon from '@mui/icons-material/Close';
 import loadable from '@loadable/component';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Loading = loadable(() => import('@pages/Loading'));
 
@@ -26,16 +27,16 @@ function AskHistory() {
 	const { data: user } = useSWR<IUser>(`/api/auth`, fetcher, {
 		dedupingInterval: 1000 * 60,
 	});
-
 	const { data: counselings, mutate: mutateCounselings } = useSWR<ICounseling[] | null>(`/api/users/counselings/${user?.id}`, fetcher, {
 		dedupingInterval: 0,
 	});
 
-	const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+	const navigate = useNavigate();
+
 	const [open, setOpen] = useState<boolean>(false);
 
-	const handleListItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
-		setSelectedIndex(index);
+	const onClickListItem = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => {
+		return navigate(`/ask/${id}`);
 	};
 
 	const handleOpen = useCallback(() => {
@@ -67,9 +68,9 @@ function AskHistory() {
 	return (
 		<Box width={'20%'} borderRight={'2px solid grey'}>
 			{counselings ? (
-				counselings.map((counseling, index) => (
-					<List>
-						<ListItemButton selected={selectedIndex === index} onClick={(event) => handleListItemClick(event, index)}>
+				<List>
+					{counselings.map((counseling, index) => (
+						<ListItemButton onClick={(event) => onClickListItem(event, counseling.id)} key={index}>
 							<ListItemText primary={counseling.title} />
 							<IconButton onClick={handleOpen}>
 								<CloseIcon />
@@ -87,8 +88,8 @@ function AskHistory() {
 								</DialogActions>
 							</Dialog>
 						</ListItemButton>
-					</List>
-				))
+					))}
+				</List>
 			) : (
 				<Box width={'100%'} height={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
 					<Typography component={'p'}>작성한 고민이 존재하지 않습니다.</Typography>
