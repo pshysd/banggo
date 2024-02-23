@@ -19,7 +19,7 @@ import fetcher from '@utils/fetcher';
 import CloseIcon from '@mui/icons-material/Close';
 import loadable from '@loadable/component';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Loading = loadable(() => import('@pages/Loading'));
 
@@ -27,9 +27,13 @@ function AskHistory() {
 	const { data: user } = useSWR<IUser | false>(`/api/auth`, fetcher, {
 		dedupingInterval: 1000 * 60,
 	});
-	const { data: counselings, mutate: mutateCounselings } = useSWR<ICounseling[] | null>(`/api/users/counselings/${user?.id}`, fetcher, {
-		dedupingInterval: 0,
-	});
+	const { data: counselings, mutate: mutateCounselings } = useSWR<ICounseling[] | null>(
+		user ? `/api/users/counselings/${user?.id}` : null,
+		fetcher,
+		{
+			dedupingInterval: 0,
+		}
+	);
 
 	const navigate = useNavigate();
 

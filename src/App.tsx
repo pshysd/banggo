@@ -21,6 +21,7 @@ const TempPost = loadable(() => import('@pages/TempPost'));
 const QuestionMain = loadable(() => import('@pages/QuestionMain'));
 const QuestionNew = loadable(() => import('@pages/QuestionNew'));
 const QuestionDetail = loadable(() => import('@pages/QuestionDetail'));
+
 function App() {
 	return (
 		<ThemeProvider theme={theme}>
