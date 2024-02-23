@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Typed from 'typed.js';
 import Button from '@mui/material/Button';
@@ -15,7 +16,7 @@ function LandingPage() {
 	const { data: user } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 0 });
 	const navigate = useNavigate();
 
-	const el = useRef(null);
+	const el = React.useRef(null);
 
 	const onClickSignup = () => {
 		navigate('/signup');
@@ -33,23 +34,24 @@ function LandingPage() {
 		window.location.href = `/api/auth/google`;
 	}, []);
 
-	useEffect(() => {
-		const typed = new Typed(el.current, {
-			strings: ['HELLO!', '안녕하세요!'],
-			typeSpeed: 70,
-			backSpeed: 30,
-			showCursor: false,
-		});
+	// useEffect(() => {
+	// 	const typed = new Typed(el.current, {
+	// 		strings: ['HELLO!', '안녕하세요!'],
+	// 		typeSpeed: 70,
+	// 		backSpeed: 30,
+	// 		loop: true,
+	// 		showCursor: false,
+	// 	});
 
-		return () => {
-			typed.destroy();
-		};
-	}, []);
+	// 	return () => {
+	// 		typed.destroy();
+	// 	};
+	// }, []);
 
 	if (user === undefined) {
 		return <Loading />;
 	}
-	
+
 	if (!user) {
 		return (
 			<div style={{ display: 'flex' }}>
@@ -65,7 +67,7 @@ function LandingPage() {
 					>
 						BANGGO
 					</Typography>
-					<Typography
+					{/* <Typography
 						component={'p'}
 						ref={el}
 						style={{
@@ -74,7 +76,7 @@ function LandingPage() {
 							color: '#fff',
 							fontSize: '3rem',
 						}}
-					/>
+					/> */}
 				</Box>
 				<Box
 					display={'flex'}

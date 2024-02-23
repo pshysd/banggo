@@ -1,19 +1,18 @@
 import loadable from '@loadable/component';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ICounseling, IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import useSWR from 'swr';
 
 const Loading = loadable(() => import('@pages/Loading'));
-const Error = loadable(() => import('@pages/Error'));
 const HomeButton = loadable(() => import('@components/HomeButton'));
 
 function AskDetail() {
 	const { id } = useParams();
 
 	const { data: user } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 1000 * 60 });
-	const { data: counseling } = useSWR<ICounseling>(`/api/counselings/${id}`, fetcher);
+	const { data: counseling } = useSWR<ICounseling>(user ? `/api/counselings/${id}` : null, fetcher);
 
 	if (user === false) {
 		return <Navigate to="/login" />;
