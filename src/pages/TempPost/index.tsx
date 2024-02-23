@@ -1,5 +1,5 @@
 import { Box, Container, Typography, Button, ToggleButtonGroup, Divider, Backdrop, ToggleButton } from '@mui/material';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import useSWR from 'swr';
 import { ICategory, IUser } from '@typings/db';
@@ -35,9 +35,6 @@ function TempPost() {
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const data = new FormData(e.currentTarget);
-
-		const problems = [];
-		const solutions = [];
 
 		if (category === null) return alert('카테고리를 설정해주셔야 합니다.');
 

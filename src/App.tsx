@@ -15,13 +15,13 @@ const Error = loadable(() => import('@pages/Error'));
 
 const AskMain = loadable(() => import('@pages/AskMain'));
 const AskDetail = loadable(() => import('@pages/AskDetail'));
-const AskNew = loadable(() => import('@pages/AskNew'));
 const AIAnswer = loadable(() => import('@pages/AIAnswer'));
 const TempPost = loadable(() => import('@pages/TempPost'));
 
 const QuestionMain = loadable(() => import('@pages/QuestionMain'));
 const QuestionNew = loadable(() => import('@pages/QuestionNew'));
 const QuestionDetail = loadable(() => import('@pages/QuestionDetail'));
+
 function App() {
 	return (
 		<ThemeProvider theme={theme}>
