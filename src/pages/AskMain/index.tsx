@@ -33,8 +33,6 @@ function AskMain() {
 		);
 	}
 
-	console.log('counselings is Array: ', Array.isArray(counselings));
-
 	return (
 		<Box display={'flex'} width={'100%'} height={'100%'} flexDirection={'column'}>
 			<Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'30%'}>

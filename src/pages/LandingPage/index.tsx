@@ -16,7 +16,7 @@ function LandingPage() {
 	const { data: user } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 0 });
 	const navigate = useNavigate();
 
-	const el = React.useRef(null);
+	// const el = React.useRef(null);
 
 	const onClickSignup = () => {
 		navigate('/signup');
@@ -140,8 +140,9 @@ function LandingPage() {
 				</Box>
 			</div>
 		);
+	} else {
+		return <Navigate to="/ask" />;
 	}
-	return <Navigate to="/ask" />;
 }
 
 export default LandingPage;
