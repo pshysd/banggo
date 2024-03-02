@@ -46,7 +46,7 @@ function Login() {
 				if (result) {
 					console.log(result);
 					mutateUser();
-					return navigate('/ask');
+					navigate('/ask');
 				}
 			} catch (e) {
 				const err = e as Error;
