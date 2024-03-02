@@ -25,33 +25,37 @@ function Login() {
 	const { data: user, mutate: mutateUser } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 0 });
 	const navigate = useNavigate();
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const formData = new FormData(e.currentTarget);
-		const email = formData.get('email');
-		const password = formData.get('password');
-		try {
-			const result = await axios.post(
-				'/api/auth/login',
-				{
-					email,
-					password,
-				},
-				{
-					withCredentials: true,
-				}
-			);
+	const handleSubmit = useCallback(
+		async (e: React.FormEvent<HTMLFormElement>) => {
+			e.preventDefault();
+			const formData = new FormData(e.currentTarget);
+			const email = formData.get('email');
+			const password = formData.get('password');
+			try {
+				const result = await axios.post(
+					'/api/auth/login',
+					{
+						email,
+						password,
+					},
+					{
+						withCredentials: true,
+					}
+				);
 
-			if (result) {
-				mutateUser();
-				return navigate('/ask');
+				if (result) {
+					console.log(result);
+					mutateUser();
+					return navigate('/ask');
+				}
+			} catch (e) {
+				const err = e as Error;
+				console.error(err);
+				alert(err.response?.data);
 			}
-		} catch (e) {
-			const err = e as Error;
-			console.error(err);
-			alert(err.response?.data);
-		}
-	};
+		},
+		[mutateUser, navigate]
+	);
 
 	const onKakao = useCallback(async () => {
 		window.location.href = `/api/auth/kakao`;
