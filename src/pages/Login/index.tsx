@@ -16,11 +16,12 @@ import {
 	CircularProgress,
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
-import Footer from '@components/Footer';
 import useSWR from 'swr';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
+import loadable from '@loadable/component';
 
+const Footer = loadable(() => import('@components/Footer'));
 function Login() {
 	const { data: user, mutate: mutateUser } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 0 });
 	const navigate = useNavigate();
@@ -67,7 +68,7 @@ function Login() {
 
 	if (user === undefined) return <CircularProgress />;
 
-	if (user) return <Navigate to={'/ask'} replace={true} />;
+	if (user) return <Navigate to={'/ask'} />;
 
 	return (
 		<Container component="main" maxWidth="xs">
