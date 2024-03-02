@@ -24,6 +24,7 @@ import loadable from '@loadable/component';
 const Footer = loadable(() => import('@components/Footer'));
 function Login() {
 	const { data: user, mutate: mutateUser } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 0 });
+	const navigate = useNavigate();
 
 	const handleSubmit = useCallback(
 		async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,7 +34,7 @@ function Login() {
 			const password = formData.get('password');
 			try {
 				const result = await axios.post(
-					`${process.env.REACT_APP_API_URL}/api/auth/login`,
+					'/api/auth/login',
 					{
 						email,
 						password,
@@ -45,6 +46,7 @@ function Login() {
 
 				if (result) {
 					mutateUser();
+					navigate('/ask');
 				}
 			} catch (e) {
 				const err = e as Error;
@@ -52,7 +54,7 @@ function Login() {
 				alert(err.response?.data);
 			}
 		},
-		[mutateUser]
+		[mutateUser, navigate]
 	);
 
 	const onKakao = useCallback(async () => {
