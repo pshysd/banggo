@@ -24,7 +24,6 @@ import loadable from '@loadable/component';
 const Footer = loadable(() => import('@components/Footer'));
 function Login() {
 	const { data: user, mutate: mutateUser } = useSWR<IUser | false>('/api/auth', fetcher, { dedupingInterval: 0 });
-	const navigate = useNavigate();
 
 	const handleSubmit = useCallback(
 		async (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,9 +44,7 @@ function Login() {
 				);
 
 				if (result) {
-					console.log(result);
 					mutateUser();
-					navigate('/ask');
 				}
 			} catch (e) {
 				const err = e as Error;
@@ -55,7 +52,7 @@ function Login() {
 				alert(err.response?.data);
 			}
 		},
-		[mutateUser, navigate]
+		[mutateUser]
 	);
 
 	const onKakao = useCallback(async () => {
