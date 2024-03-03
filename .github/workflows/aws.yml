@@ -40,7 +40,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./build s3://banggo-client
+        run: aws s3 sync ./build s3://ban9go.com
 
       - name: Cache Invalidation
         run: aws cloudfront create-invalidation --distribution-id ${{secrets.DISTRIBUTION_ID}} --paths "/*"
