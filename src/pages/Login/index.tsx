@@ -45,7 +45,6 @@ function Login() {
 				);
 
 				if (result) {
-					mutateUser();
 					navigate('/ask');
 				}
 			} catch (e) {
